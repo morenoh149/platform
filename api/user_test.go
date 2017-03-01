@@ -78,6 +78,12 @@ func TestCreateUser(t *testing.T) {
 		}
 	}
 
+	user.Username = "1" + user.Username
+	user.Email = strings.ToLower("success+"+model.NewId()) + "@simulator.amazonses.com"
+	if _, err := Client.CreateUser(&user, ""); err == nil {
+		t.Fatal("should have been an error - username must start with letter")
+	}
+
 	if _, err := Client.DoApiPost("/users/create", "garbage"); err == nil {
 		t.Fatal("should have been an error")
 	}
